@@ -22,7 +22,7 @@ public class Land implements Serializable, Comparable<Land> {
 	// MEMBER VARIABLES
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private long id;
 	private String naam;
 
 
@@ -35,7 +35,7 @@ public class Land implements Serializable, Comparable<Land> {
 
 	
 	// GETTERS
-	public int getId() {
+	public long getId() {
 		return this.id;
 	}
 	public String getNaam() {

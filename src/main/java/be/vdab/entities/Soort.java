@@ -25,7 +25,7 @@ public class Soort implements Serializable, Comparable<Soort> {
 	// MEMBER VARIABLES
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private long id;
 	private String naam;
 
 	@ManyToOne(optional=false, fetch=FetchType.LAZY)
@@ -42,7 +42,7 @@ public class Soort implements Serializable, Comparable<Soort> {
 
 	
 	// GETTERS
-	public int getId() {
+	public long getId() {
 		return this.id;
 	}
 	public String getNaam() {

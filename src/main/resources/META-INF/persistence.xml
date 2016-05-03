@@ -17,6 +17,7 @@
 		<class>be.vdab.entities.Wijn</class>
 		
 		<class>be.vdab.valueobjects.Adres</class>
+		<class>be.vdab.valueobjects.Bestelbonlijn</class>
 		
 		<!-- PERSISTED CLASSES -->
 		

@@ -160,3 +160,7 @@ dd {
 .pagineren {
 	font-size: x-large;
 }
+
+.pagecontent {
+	margin:		auto;
+}

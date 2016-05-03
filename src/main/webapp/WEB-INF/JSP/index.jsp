@@ -13,11 +13,11 @@
 	
 	<!-- HEADER (banner + menu) START -->
 	<header class="pageheader">
+
 		<img alt="banner" src="<c:url value="/images/intro.jpg" />">
-	</header>
 	
-	<nav class="landenmenu">
-	<ul class="zonderbolletjes">
+		<nav class="landenmenu">
+		<ul class="zonderbolletjes">
 		<c:forEach items="${landen}" var="land">
 	
 			<c:url value="/index.htm" var="wijnenUitLandURL">
@@ -30,8 +30,28 @@
 			</li>
 	
 		</c:forEach>
-	</ul>
-	</nav>
+		</ul>
+		</nav>
+	</header>
+	<!-- HEADER END -->
+	
+	<!-- PAGE CONTENT START -->
+	<div class="pagecontent">
+		
+		<c:if test="${not empty soorten}">
+			<h3>Soorten uit ${gevraagdLand}</h3>
+			
+			<ul>
+			<c:forEach items="${soorten}" var="soort">
+				<c:url value="/index.htm" var="soortURL">
+					<c:param name="soortid" value="${soort.id}"/>
+				</c:url>
+				<li><a href="${soortURL}">${soort}</a></li>
+			</c:forEach>
+			</ul>
+		</c:if>
+		
+	</div>
 
 </body>
 </html>

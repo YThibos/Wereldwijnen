@@ -23,7 +23,7 @@ public class Bestelbon implements Serializable, Comparable<Bestelbon> {
 	// MEMBER VARIABLES
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private long id;
 	// TODO LocalDate
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date besteld;
@@ -38,7 +38,7 @@ public class Bestelbon implements Serializable, Comparable<Bestelbon> {
 	
 
 	// GETTERS & SETTERS
-	public int getId() {
+	public long getId() {
 		return this.id;
 	}
 	public Date getBesteld() {

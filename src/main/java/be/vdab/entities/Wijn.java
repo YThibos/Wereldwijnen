@@ -18,7 +18,7 @@ public class Wijn implements Serializable, Comparable<Wijn> {
 	// MEMBER VARIABLES
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private long id;
 	private byte beoordeling;
 	private int inBestelling;
 	private int jaar;
@@ -42,7 +42,7 @@ public class Wijn implements Serializable, Comparable<Wijn> {
 
 	
 	// GETTERS & SETTERS
-	public int getId() {
+	public long getId() {
 		return this.id;
 	}
 	public byte getBeoordeling() {
