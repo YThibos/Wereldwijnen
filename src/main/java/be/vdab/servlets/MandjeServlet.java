@@ -38,15 +38,15 @@ public class MandjeServlet extends HttpServlet {
 		request.setAttribute("landen", landService.findAll());
 		
 		@SuppressWarnings("unchecked")
-		Map<Long, Long> mandje = (Map<Long, Long>) request.getSession(false).getAttribute("mandje");
+		Map<Long, Integer> mandje = (Map<Long, Integer>) request.getSession(false).getAttribute("mandje");
 		
 		if (mandje != null) {
 			
-			// MAP <Wijn, <Aantal, Totaalprijs>>
 			List<Bestelbonlijn> bestellijnen = new LinkedList<>();
 			
-			for (Entry<Long, Long> entry : mandje.entrySet()) {
-				bestellijnen.add(new Bestelbonlijn(entry.getKey().intValue(), null, wijnService.read(entry.getKey())));
+			for (Entry<Long, Integer> entry : mandje.entrySet()) {
+				bestellijnen.add(new Bestelbonlijn(entry.getValue().intValue(), wijnService.read(entry.getKey())));
+				System.out.println("AANTAL FLESSEN UIT MANDJE: " + entry.getKey().intValue());
 			}
 			
 			request.setAttribute("bestellijnen", bestellijnen);

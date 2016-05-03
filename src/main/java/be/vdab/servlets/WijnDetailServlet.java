@@ -73,9 +73,11 @@ public class WijnDetailServlet extends HttpServlet {
 			try {
 				long id = Long.parseLong(request.getParameter("id"));
 
-				long aantalFlessen = Long.parseLong(request.getParameter("aantalFlessen"));
+				int aantalFlessen = Integer.parseInt(request.getParameter("aantalFlessen"));
 
 				if (aantalFlessen >= 1) {
+					
+					System.out.println("AANTAL FLESSEN IN MANDJE: " + aantalFlessen);
 
 					addOrderToMandje(request, id, aantalFlessen);
 					response.sendRedirect(String.format(REDIRECT_URL, request.getContextPath()));
@@ -96,11 +98,11 @@ public class WijnDetailServlet extends HttpServlet {
 		}
 	}
 
-	private void addOrderToMandje(HttpServletRequest request, Long id, Long aantal) {
+	private void addOrderToMandje(HttpServletRequest request, Long id, Integer aantal) {
 
 		HttpSession session = request.getSession();
 		@SuppressWarnings("unchecked")
-		Map<Long, Long> mandje = (Map<Long, Long>) session.getAttribute("mandje");
+		Map<Long, Integer> mandje = (Map<Long, Integer>) session.getAttribute("mandje");
 		if (mandje == null) {
 			mandje = new HashMap<>();
 		}
