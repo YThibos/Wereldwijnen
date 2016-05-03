@@ -75,6 +75,13 @@ public class Wijn implements Serializable, Comparable<Wijn> {
 	public void setSoort(Soort soort) {
 		this.soort = soort;
 	}
+	public String getSterrenBeoordeling() {
+		String sterretjes = "";
+		for (byte i = 0; i < beoordeling; i++) {
+			sterretjes += "&#9733;";
+		}
+		return sterretjes;
+	}
 
 	
 	// OVERRIDDEN OBJECT METHODS

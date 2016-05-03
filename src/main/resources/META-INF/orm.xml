@@ -21,4 +21,12 @@
 		</query>
 	</named-query>
 	
+	<named-query name="Wijnen.findBySoort">
+		<query>
+			SELECT w FROM Wijn w
+			WHERE w.soort = :soort
+			ORDER BY w.jaar ASC
+		</query>
+	</named-query>
+	
 </entity-mappings>

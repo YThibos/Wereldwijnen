@@ -12,6 +12,7 @@ import be.vdab.entities.Land;
 import be.vdab.entities.Soort;
 import be.vdab.services.LandService;
 import be.vdab.services.SoortService;
+import be.vdab.services.WijnService;
 
 /**
  * Servlet implementation class IndexServlet
@@ -26,6 +27,7 @@ public class IndexServlet extends HttpServlet {
 	// SERVICES
 	private final transient LandService landService = new LandService();
 	private final transient SoortService soortService = new SoortService();
+	private final transient WijnService wijnService = new WijnService();
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -34,20 +36,46 @@ public class IndexServlet extends HttpServlet {
 		
 		request.setAttribute("landen", landService.findAll());
 		
-		if (request.getParameter("soortid") != null) {
-			Soort gevraagdeSoort = soortService.read(Long.parseLong(request.getParameter("soortid")));
-			
-		}
-		
 		// Als user soorten v/e land heeft opgevraagd, fetch soorten en zet als attribute
+		// TODO NullpointerExc catchen wanneer service niets vond
 		if (request.getParameter("landid") != null) {
-			Land gevraagdLand = landService.read(Long.parseLong(request.getParameter("landid")));
-			request.setAttribute("gevraagdLand", gevraagdLand);
-			request.setAttribute("soorten", soortService.findByLand(gevraagdLand));
+			try {
+				setLandidAttributen(request, Long.parseLong(request.getParameter("landid")));
+			}
+			catch (NumberFormatException ex) {
+				request.setAttribute("landidfout", "Ongeldig id meegegeven voor land");
+			}
+		}
+		else if (request.getParameter("soortid") != null) {
+			try {
+				setSoortidAttributen(request, Long.parseLong(request.getParameter("soortid")));
+				Soort gevraagdeSoort = (Soort) request.getAttribute("gevraagdeSoort");
+				setLandidAttributen(request, gevraagdeSoort.getLand().getId());
+			}
+			catch (NumberFormatException ex) {
+				request.setAttribute("soortidfout", "Ongeldig id meegegeven voor soort");
+			}
 		}
 		
 		request.getRequestDispatcher(VIEW).forward(request, response);
 		
+	}
+	
+	private void setLandidAttributen(HttpServletRequest request, long landid) {
+		Land gevraagdLand = landService.read(landid);
+		request.setAttribute("gevraagdLand", gevraagdLand);
+		request.setAttribute("soorten", soortService.findByLand(gevraagdLand));
+	}
+	
+	private void setSoortidAttributen(HttpServletRequest request, long soortid) {
+		try {
+			Soort gevraagdeSoort = soortService.read(soortid);
+			request.setAttribute("gevraagdeSoort", gevraagdeSoort);
+			request.setAttribute("wijnen", wijnService.findBySoort(gevraagdeSoort));
+		}
+		catch (NumberFormatException ex) {
+			request.setAttribute("soortidfout", "Ongeldig id meegegeven voor soort");
+		}
 	}
 
 }
