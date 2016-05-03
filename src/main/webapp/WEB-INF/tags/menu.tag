@@ -1,10 +1,8 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
-<%@taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core'%>
+<%@ taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core'%>
 
-<img alt="banner" src="<c:url value="/images/intro.jpg" />">
-	
 <nav class="landenmenu">
-<ul class="zonderbolletjes">
+<ul>
 	<c:forEach items="${landen}" var="land">
 	
 	<c:url value="/index.htm" var="wijnenUitLandURL">
@@ -17,5 +15,9 @@
 	</li>
 	
 	</c:forEach>
+	
+	<c:if test="${not empty mandje}">
+		<li><a href="<c:url value="/mandje.htm" />"><img alt="mandje" src="<c:url value="/images/mandje.png" />"></a></li>
+	</c:if>
 </ul>
 </nav>

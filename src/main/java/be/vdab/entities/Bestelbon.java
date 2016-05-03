@@ -2,12 +2,24 @@ package be.vdab.entities;
 
 // TODO Javadoc
 import java.io.Serializable;
-import javax.persistence.*;
+import java.util.Date;
+import java.util.Set;
+
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import be.vdab.enums.Bestelwijze;
 import be.vdab.valueobjects.Adres;
-
-import java.util.Date;
+import be.vdab.valueobjects.Bestelbonlijn;
 
 
 /**
@@ -31,7 +43,9 @@ public class Bestelbon implements Serializable, Comparable<Bestelbon> {
 	private String naam;
 	@Embedded
 	private Adres adres;
-
+	@ElementCollection
+	@CollectionTable(name="bestelbonlijnen", joinColumns= @JoinColumn(name="bonid"))
+	private Set<Bestelbonlijn> bestelbonlijnen;
 	
 	// CONSTRUCTORS
 	protected Bestelbon() {}
