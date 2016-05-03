@@ -43,8 +43,9 @@ public class Bestelbon implements Serializable, Comparable<Bestelbon> {
 	private String naam;
 	@Embedded
 	private Adres adres;
-	@ElementCollection
-	@CollectionTable(name="bestelbonlijnen", joinColumns= @JoinColumn(name="bonid"))
+//	@ElementCollection
+//	@CollectionTable(name="bestelbonlijnen", joinColumns= @JoinColumn(name="bonid"))
+	@OneToMany(mappedBy="Wijn")
 	private Set<Bestelbonlijn> bestelbonlijnen;
 	
 	// CONSTRUCTORS

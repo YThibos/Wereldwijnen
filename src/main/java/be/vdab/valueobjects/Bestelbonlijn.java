@@ -22,6 +22,7 @@ public class Bestelbonlijn implements Serializable {
 	private long wijnid;
 	private int aantal;
 	
+	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="id")
 	private Bestelbon bestelbon;
