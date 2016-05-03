@@ -2,6 +2,7 @@
 <%@ taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core'%>
 
 <nav class="landenmenu">
+<h1>Wereldwijnen</h1>
 <ul>
 	<c:forEach items="${landen}" var="land">
 	

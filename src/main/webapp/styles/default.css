@@ -2,58 +2,89 @@ body {
 	background-color: #FFEC9F;
 	font-family: sans-serif;
 }
-nav.landenmenu {
-	padding:		0;
-	margin:			0;
-	border:			0;
-}
+/* nav.landenmenu { */
+/* 	padding:		0; */
+/* 	margin:			0; */
+/* 	border:			0; */
+/* } */
 
+
+/* nav  a:hover { */
+/* 	text-decoration: none; */
+/* } */
+
+/* nav ul { */
+/* 	position: relative; */
+/* 	margin: 0 auto; */
+/* } */
+
+/* nav ul,nav ul li ul { */
+/* 	list-style: none; */
+/* 	margin: 0 auto; */
+/* 	padding: 0; */
+/* } */
+
+/* nav>ul>li { */
+/* 	float: left; */
+/* 	position: relative; */
+/* } */
+
+/* nav ul li a,nav ul li:hover ul { */
+/* 	display: block; */
+/* } */
+
+/* nav ul li ul { */
+/* 	background-color: #F5F5F5; */
+/* 	box-shadow: 5px 5px #777777; */
+/* 	display: none; */
+/* 	position: absolute; */
+/* 	width: 20em; */
+/* 	z-index: 100; */
+/* } */
+
+/* nav>ul>li>a,nav ul li ul li a { */
+/* 	color: black; */
+/* 	line-height: 1.8em; */
+/* 	padding: 0 0.5em; */
+/* 	text-decoration: none; */
+/* } */
 nav {
+	position:			relative;
 	background-image:	url("/Wereldwijnen/images/intro.jpg");
 	min-width:			320px;
 	min-height:			226px;
 	height: 1.8em;
 	font-size: large;
 }
-
-nav  a:hover {
-	text-decoration: none;
+nav h1 {
+	position:			absolute;
+	color: 				lightgray;
+	left:				40%;
+	font-size: 			36px;
 }
-
 nav ul {
-	position: relative;
-	margin: 0 auto;
+	position: 			absolute;
+	left:				25%;
+	bottom:				-20px;
+	padding: 0.4em 0;
+	max-width: 			66%;
 }
 
-nav ul,nav ul li ul {
-	list-style: none;
-	margin: 0;
-	padding: 0;
+nav li {
+	display: inline;
 }
 
-nav>ul>li {
-	float: left;
-	position: relative;
-}
-
-nav ul li a,nav ul li:hover ul {
-	display: block;
-}
-
-nav ul li ul {
-	background-color: #F5F5F5;
-	box-shadow: 5px 5px #777777;
-	display: none;
-	position: absolute;
-	width: 20em;
-	z-index: 100;
-}
-
-nav>ul>li>a,nav ul li ul li a {
-	color: black;
-	line-height: 1.8em;
-	padding: 0 0.5em;
+nav li a {
+	color: white;
+	font-weight: bold;
+	padding-left: 0.5em;
 	text-decoration: none;
+	vertical-align: middle;
+}
+
+
+nav li a:hover {
+	color: #808080;
 }
 
 h1 {
@@ -170,5 +201,5 @@ dd {
 
 section.pagecontent {
 	margin:		0 auto;
-	width:		800px;
+	width:		40%;
 }
