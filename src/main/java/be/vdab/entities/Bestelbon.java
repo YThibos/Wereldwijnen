@@ -1,14 +1,16 @@
 package be.vdab.entities;
 
-// TODO Javadoc
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -43,13 +45,31 @@ public class Bestelbon implements Serializable, Comparable<Bestelbon> {
 	private String naam;
 	@Embedded
 	private Adres adres;
-	@ElementCollection
+	@ElementCollection(fetch=FetchType.LAZY)
 	@CollectionTable(name="bestelbonlijnen", joinColumns= @JoinColumn(name="bonid"))
 	private Set<Bestelbonlijn> bestelbonlijnen;
 	
 	// CONSTRUCTORS
 	protected Bestelbon() {}
 	
+	/**
+	 * 
+	 * @param bestelwijze
+	 * @param naam
+	 * @param adres
+	 * @param bestelbonlijnen
+	 * @throws IllegalArgumentException
+	 * @throws NullPointerException
+	 */
+	public Bestelbon(Bestelwijze bestelwijze, String naam, Adres adres, Set<Bestelbonlijn> bestelbonlijnen) 
+			throws IllegalArgumentException, NullPointerException {
+		this.besteld = java.sql.Date.valueOf(LocalDate.now());
+		setBestelwijze(bestelwijze);
+		setNaam(naam);
+		setAdres(adres);
+		setBestelbonlijnen(bestelbonlijnen);
+	}
+
 
 	// GETTERS & SETTERS
 	public long getId() {
@@ -61,22 +81,35 @@ public class Bestelbon implements Serializable, Comparable<Bestelbon> {
 	public Bestelwijze getBestelwijze() {
 		return this.bestelwijze;
 	}
-	public void setBestelwijze(Bestelwijze bestelwijze) {
-		this.bestelwijze = bestelwijze;
-	}
 	public String getNaam() {
 		return this.naam;
-	}
-	public void setNaam(String naam) {
-		this.naam = naam;
 	}
 	public Adres getAdres() {
 		return adres;
 	}
-	public void setAdres(Adres adres) {
+	public Set<Bestelbonlijn> getBestelbonlijnen() {
+		return bestelbonlijnen;
+	}
+	
+	public void setBestelwijze(Bestelwijze bestelwijze) {
+		this.bestelwijze = bestelwijze;
+	}
+	public void setNaam(String naam) throws IllegalArgumentException {
+		if (naam != null && !naam.equals("")) {
+			this.naam = naam;
+		}	
+		else {
+			throw new IllegalArgumentException("Ongeldige naam voor bestelbon. Mag niet null of leeg zijn");
+		}
+	}
+	public void setAdres(Adres adres) throws NullPointerException {
+		Objects.requireNonNull(adres, "Ongeldig adres opgegeven");
 		this.adres = adres;
 	}
-
+	public void setBestelbonlijnen(Set<Bestelbonlijn> bestelbonlijnen) throws NullPointerException {
+		Objects.requireNonNull(bestelbonlijnen, "Ongeldige bestelbonlijnen opgegeven");
+		this.bestelbonlijnen = bestelbonlijnen;
+	}
 
 	// OVERRIDDEN OBJECT METHODS
 	@Override

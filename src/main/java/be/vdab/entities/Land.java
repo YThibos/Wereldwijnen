@@ -8,7 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-// TODO Javadoc (immutable class)
 /**
  * The persistent class for the landen database table.
  * 

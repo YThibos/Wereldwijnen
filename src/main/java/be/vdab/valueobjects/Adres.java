@@ -5,7 +5,6 @@ import java.io.Serializable;
 import javax.persistence.Embeddable;
 
 
-// TODO Javadoc value object immutable
 @Embeddable
 public class Adres implements Serializable {
 
@@ -21,15 +20,22 @@ public class Adres implements Serializable {
 	// CONSTRUCTORS
 	protected Adres() {}
 
-	public Adres(String straat, String huisNr, String postCode, String gemeente) {
-		this.straat = straat;
-		this.huisNr = huisNr;
-		this.postCode = postCode;
-		this.gemeente = gemeente;
+	/**
+	 * 
+	 * @param straat
+	 * @param huisNr
+	 * @param postcode
+	 * @param gemeente
+	 * @throws IllegalArgumentException
+	 */
+	public Adres(String straat, String huisNr, String postcode, String gemeente) throws IllegalArgumentException {
+		setStraat(straat);
+		setHuisNr(huisNr);
+		setPostcode(postcode);
+		setGemeente(gemeente);
 	}
-
 	
-	// GETTERS
+	// GETTERS (SETTERS ARE PRIVATE AS CONVENIENCE METHODS!)
 	public String getStraat() {
 		return straat;
 	}
@@ -41,6 +47,29 @@ public class Adres implements Serializable {
 	}
 	public String getGemeente() {
 		return gemeente;
+	}
+	
+	private final void setStraat(String straat) throws IllegalArgumentException {
+		checkStringValidity(straat);
+		this.straat = straat;
+	}
+	private final void setHuisNr(String huisNr) throws IllegalArgumentException {
+		checkStringValidity(huisNr);
+		this.huisNr = huisNr;
+	}
+	private final void setPostcode(String postcode) throws IllegalArgumentException {
+		checkStringValidity(postcode);
+		this.postCode = postcode;
+	}
+	private final void setGemeente(String gemeente) throws IllegalArgumentException {
+		checkStringValidity(gemeente);
+		this.gemeente = gemeente;
+	}
+	
+	public static final void checkStringValidity(String string) throws IllegalArgumentException {
+		if (string == null || string.equals("Velden van een Adres moeten ingevuld zijn en mogen niet leeg zijn")) {
+			throw new IllegalArgumentException();
+		}
 	}
 
 	

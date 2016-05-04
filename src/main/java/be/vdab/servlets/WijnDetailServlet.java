@@ -71,22 +71,20 @@ public class WijnDetailServlet extends HttpServlet {
 		if (request.getParameter("id") != null) {
 
 			try {
+				
 				long id = Long.parseLong(request.getParameter("id"));
-
 				int aantalFlessen = Integer.parseInt(request.getParameter("aantalFlessen"));
 
 				if (aantalFlessen >= 1) {
 					
-					System.out.println("AANTAL FLESSEN IN MANDJE: " + aantalFlessen);
-
 					addOrderToMandje(request, id, aantalFlessen);
 					response.sendRedirect(String.format(REDIRECT_URL, request.getContextPath()));
 
 				} else {
-					fouten.put("aantalFlessen", "Aantal te bestellen flessen moet minstens één zijn");
+					fouten.put("input", "Aantal te bestellen flessen moet minstens één zijn");
 				}
 			} catch (NumberFormatException ex) {
-				fouten.put("id", "Ongeldig id opgegeven");
+				fouten.put("input", "Ongeldige input doorgegeven. [Your IP has been logged]");
 			}
 		} else {
 			fouten.put("id", "Ongeldig id opgegeven");
@@ -106,7 +104,10 @@ public class WijnDetailServlet extends HttpServlet {
 		if (mandje == null) {
 			mandje = new HashMap<>();
 		}
-		mandje.put(id, aantal);
+		Integer current = mandje.putIfAbsent(id, aantal);
+		if (current != null) {
+			mandje.put(id, aantal + current);
+		}
 		session.setAttribute("mandje", mandje);
 
 	}

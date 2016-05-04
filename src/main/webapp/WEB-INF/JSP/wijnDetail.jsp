@@ -43,12 +43,13 @@
 			<dd>${wijn.prijs}</dd>
 		</dl>
 		
-		<form action="" method="post">
-			<label>Aantal flessen
+		<form action="" method="post" id="toevoegform">
+			<label><span>${fouten.input}</span>
+			Aantal flessen
 			<input name="aantalFlessen" type="number" min="1" required></label>
 			<input type="hidden" name="id" value="${wijn.id}">
 			
-			<input type="submit" value="Toevoegen">
+			<input type="submit" value="Toevoegen" id="toevoegknop">
 		</form>
 		
 		</c:if>
@@ -56,5 +57,15 @@
 	</section>
 
 </body>
+
+<script>
+	document.getElementById('toevoegform').onsubmit = function() {
+		if ( ! navigator.cookieEnabled) {
+			alert("Dit werkt enkel als cookies aanstaan"); 
+			return false; 
+		}
+		document.getElementById('toevoegknop').disabled=true;
+	};
+</script>
 
 </html>

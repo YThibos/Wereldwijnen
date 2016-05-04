@@ -3,13 +3,11 @@ package be.vdab.valueobjects;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import be.vdab.entities.Bestelbon;
 import be.vdab.entities.Wijn;
 
 @Embeddable
@@ -17,15 +15,11 @@ public class Bestelbonlijn implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
-	// MEMBER VARIABLES
-//	private long bonid;
-//	private long wijnid;
 	private int aantal;
 	
-	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.PERSIST)
-	@JoinColumn(name="id")
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="wijnid")
 	private Wijn wijn;
-	
 	
 	// CONSTRUCTORS
 	protected Bestelbonlijn() {}
@@ -35,13 +29,6 @@ public class Bestelbonlijn implements Serializable {
 		this.wijn = wijn;
 	}
 	
-	// GETTERS
-//	public long getBonid() {
-//		return bonid;
-//	}
-//	public long getWijnid() {
-//		return wijnid;
-//	}
 	public int getAantal() {
 		return aantal;
 	}
