@@ -67,8 +67,8 @@ public class Adres implements Serializable {
 	}
 	
 	public static final void checkStringValidity(String string) throws IllegalArgumentException {
-		if (string == null || string.equals("Velden van een Adres moeten ingevuld zijn en mogen niet leeg zijn")) {
-			throw new IllegalArgumentException();
+		if (string == null || string.equals("")) {
+			throw new IllegalArgumentException("Veld verplicht in te vullen");
 		}
 	}
 

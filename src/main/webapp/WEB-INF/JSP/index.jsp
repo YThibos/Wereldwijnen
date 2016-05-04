@@ -19,6 +19,8 @@
 	
 	<!-- PAGE CONTENT START -->
 	<section class="pagecontent">
+	
+		<label><span>${idfout}</span></label>
 		
 		<c:if test="${not empty soorten}">
 			<h3>Soorten uit ${gevraagdLand}</h3>
@@ -46,6 +48,11 @@
 			</c:forEach>
 			</ul>
 		
+		</c:if>
+		
+		<c:if test="${empty soorten and empty wijnen }">
+			<h1>Welkom bij Wereldwijnen</h1>
+			<p>Klik op bovenstaande vlaggetjes om te bladeren tussen de verschillende landen en wijnen.</p>
 		</c:if>
 		
 	</section>

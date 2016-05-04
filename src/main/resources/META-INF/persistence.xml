@@ -19,6 +19,9 @@
 		<class>be.vdab.valueobjects.Adres</class>
 		<class>be.vdab.valueobjects.Bestelbonlijn</class>
 		
+		<class>be.vdab.util.LocalDateAttributeConverter</class>
+		<class>be.vdab.util.LocalDateTimeAttributeConverter</class>
+		
 		<!-- PERSISTED CLASSES -->
 		
 		<!-- HIBERNATE PROPERTIES -->

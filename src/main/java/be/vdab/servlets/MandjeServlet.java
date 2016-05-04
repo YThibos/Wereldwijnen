@@ -1,7 +1,6 @@
 package be.vdab.servlets;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -50,14 +49,8 @@ public class MandjeServlet extends HttpServlet {
 		Map<Long, Integer> mandje = fetchMandje(request);
 
 		if (mandje != null) {
-			Set<Bestelbonlijn> bestellijnen = new HashSet<>();
 
-			for (Entry<Long, Integer> entry : mandje.entrySet()) {
-				bestellijnen.add(new Bestelbonlijn(entry.getValue().intValue(), wijnService.read(entry.getKey())));
-			}
-
-			request.setAttribute("totaalTeBetalen", bestellijnen.stream().map(Bestelbonlijn::getTotaalPrijs)
-					.reduce(BigDecimal.ZERO, (b1, b2) -> b1.add(b2)));
+			Set<Bestelbonlijn> bestellijnen = createBestelbonlijnSet(request, mandje);
 
 			request.setAttribute("bestellijnen", bestellijnen);
 			request.setAttribute("bestelwijzen", Bestelwijze.getValuesList());
@@ -72,24 +65,26 @@ public class MandjeServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		Map<String, String> fouten = new HashMap<>();
-
+		Map<Long, Integer> mandje = fetchMandje(request);
+		
 		checkInput(request, fouten);
 
+		// Haal adres uit (gecheckte) parameters en steek in adres object.
 		Adres adres;
 		try {
 			adres = new Adres(request.getParameter("straat"), request.getParameter("huisnummer"),
 					request.getParameter("postcode"), request.getParameter("gemeente"));
 		} catch (IllegalArgumentException ex) {
+			// Ongeldige input meegegeven voor adres, ga terug naar doPost
 			adres = null;
 			request.setAttribute("fouten", fouten);
-			request.getRequestDispatcher(VIEW);
+			doGet(request, response);
 		}
-		
-		Map<Long, Integer> mandje = fetchMandje(request);
 		
 		Bestelbon bestelbon = null;
 		
-		if (mandje != null) {
+		// Stel bestelbon samen op basis van gegevens in mandje
+		if (mandje != null && fouten.isEmpty()) {
 			Set<Bestelbonlijn> bestelbonlijnen = new HashSet<>();
 
 			for (Entry<Long, Integer> entry : mandje.entrySet()) {
@@ -104,6 +99,7 @@ public class MandjeServlet extends HttpServlet {
 			bestelbon.setBestelbonlijnen(bestelbonlijnen);
 		}
 
+		// Als nog steeds geen fouten, persist bestelbon
 		if (fouten.isEmpty()) {
 			Bestelbon updatedBestelbon = bestelbonService.tryCreate(bestelbon);
 			if (updatedBestelbon != null) {
@@ -111,12 +107,12 @@ public class MandjeServlet extends HttpServlet {
 				response.sendRedirect(String.format(REDIRECT_URL, request.getContextPath(), updatedBestelbon.getId()));
 			}
 			else {
-				fouten.put("database", "Fout bij het aanmaken van de bestelbon");
+				fouten.put("mandje", "Fout bij het aanmaken van de bestelbon");
 			}
 		}
 		if (!fouten.isEmpty()) {
 			request.setAttribute("fouten", fouten);
-			request.getRequestDispatcher(VIEW).forward(request, response);
+			doGet(request, response);
 		}
 	}
 
@@ -184,5 +180,17 @@ public class MandjeServlet extends HttpServlet {
 		Bestelbon bestelbon = new Bestelbon(bestelwijze, naam, dummy, dummyset);
 		
 		return bestelbon;
+	}
+	
+	private Set<Bestelbonlijn> createBestelbonlijnSet(HttpServletRequest request, Map<Long, Integer> mandje) {
+		Set<Bestelbonlijn> bestellijnen = new HashSet<>();
+		if (mandje != null) {
+
+			for (Entry<Long, Integer> entry : mandje.entrySet()) {
+				bestellijnen.add(new Bestelbonlijn(entry.getValue().intValue(), wijnService.read(entry.getKey())));
+			}
+			
+		}
+		return bestellijnen;
 	}
 }

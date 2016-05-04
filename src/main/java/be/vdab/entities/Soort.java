@@ -27,7 +27,6 @@ public class Soort implements Serializable, Comparable<Soort> {
 	private long id;
 	private String naam;
 
-	// TODO Check overal fetchtype & optional & andere annotation parameters
 	@ManyToOne(optional=false, fetch=FetchType.LAZY)
 	@JoinColumn(name="landid")
 	private Land land;

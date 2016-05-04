@@ -36,24 +36,27 @@ public class IndexServlet extends HttpServlet {
 		
 		request.setAttribute("landen", landService.findAll());
 		
-		// Als user soorten v/e land heeft opgevraagd, fetch soorten en zet als attribute
-		// TODO NullpointerExc catchen wanneer service niets vond
+		// Check landid gegeven. Als handmatig landid en soortid beiden ingevoerd -> enkel landid telt.
 		if (request.getParameter("landid") != null) {
 			try {
+				// Set request attributen adhv landid parameter
 				setLandidAttributen(request, Long.parseLong(request.getParameter("landid")));
 			}
 			catch (NumberFormatException ex) {
-				request.setAttribute("landidfout", "Ongeldig id meegegeven voor land");
+				request.setAttribute("idfout", "Ongeldig id meegegeven voor land");
 			}
 		}
 		else if (request.getParameter("soortid") != null) {
 			try {
+				// Set request attributen adhv soortid parameter
 				setSoortidAttributen(request, Long.parseLong(request.getParameter("soortid")));
 				Soort gevraagdeSoort = (Soort) request.getAttribute("gevraagdeSoort");
-				setLandidAttributen(request, gevraagdeSoort.getLand().getId());
+				if (gevraagdeSoort != null) {
+					setLandidAttributen(request, gevraagdeSoort.getLand().getId());
+				}
 			}
 			catch (NumberFormatException ex) {
-				request.setAttribute("soortidfout", "Ongeldig id meegegeven voor soort");
+				request.setAttribute("idfout", "Ongeldig id meegegeven voor wijnsoort");
 			}
 		}
 		
@@ -63,18 +66,23 @@ public class IndexServlet extends HttpServlet {
 	
 	private void setLandidAttributen(HttpServletRequest request, long landid) {
 		Land gevraagdLand = landService.read(landid);
-		request.setAttribute("gevraagdLand", gevraagdLand);
-		request.setAttribute("soorten", soortService.findByLand(gevraagdLand));
+		if (gevraagdLand != null) {
+			request.setAttribute("gevraagdLand", gevraagdLand);
+			request.setAttribute("soorten", soortService.findByLand(gevraagdLand));
+		}
+		else {
+			request.setAttribute("idfout", "Geen land gevonden met opgegeven id");
+		}
 	}
 	
 	private void setSoortidAttributen(HttpServletRequest request, long soortid) {
-		try {
-			Soort gevraagdeSoort = soortService.read(soortid);
+		Soort gevraagdeSoort = soortService.read(soortid);
+		if (gevraagdeSoort != null) {
 			request.setAttribute("gevraagdeSoort", gevraagdeSoort);
 			request.setAttribute("wijnen", wijnService.findBySoort(gevraagdeSoort));
 		}
-		catch (NumberFormatException ex) {
-			request.setAttribute("soortidfout", "Ongeldig id meegegeven voor soort");
+		else {
+			request.setAttribute("idfout", "Geen wijnsoort gevonden met opgegeven id");
 		}
 	}
 

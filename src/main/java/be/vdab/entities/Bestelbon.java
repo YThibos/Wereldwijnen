@@ -1,8 +1,7 @@
 package be.vdab.entities;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
 
@@ -16,8 +15,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import be.vdab.enums.Bestelwijze;
 import be.vdab.valueobjects.Adres;
@@ -38,9 +35,7 @@ public class Bestelbon implements Serializable, Comparable<Bestelbon> {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
-	// TODO LocalDate
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date besteld;
+	private LocalDateTime besteld;
 	private Bestelwijze bestelwijze;
 	private String naam;
 	@Embedded
@@ -63,7 +58,7 @@ public class Bestelbon implements Serializable, Comparable<Bestelbon> {
 	 */
 	public Bestelbon(Bestelwijze bestelwijze, String naam, Adres adres, Set<Bestelbonlijn> bestelbonlijnen) 
 			throws IllegalArgumentException, NullPointerException {
-		this.besteld = java.sql.Date.valueOf(LocalDate.now());
+		this.besteld = LocalDateTime.now();
 		setBestelwijze(bestelwijze);
 		setNaam(naam);
 		setAdres(adres);
@@ -75,7 +70,7 @@ public class Bestelbon implements Serializable, Comparable<Bestelbon> {
 	public long getId() {
 		return this.id;
 	}
-	public Date getBesteld() {
+	public LocalDateTime getBesteld() {
 		return this.besteld;
 	}
 	public Bestelwijze getBestelwijze() {
