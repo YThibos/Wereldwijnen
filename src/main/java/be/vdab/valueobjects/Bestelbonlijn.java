@@ -10,6 +10,11 @@ import javax.persistence.ManyToOne;
 
 import be.vdab.entities.Wijn;
 
+/**
+ * Immutable value object die een bestelbonlijn voorstelt zoals het wordt bijgehouden in de table bestelbonlijnen.
+ * @author Thibos
+ *
+ */
 @Embeddable
 public class Bestelbonlijn implements Serializable {
 	
@@ -46,8 +51,7 @@ public class Bestelbonlijn implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + aantal;
-//		result = prime * result + (int) (bonid ^ (bonid >>> 32));
-//		result = prime * result + (int) (wijnid ^ (wijnid >>> 32));
+		result = prime * result + ((wijn == null) ? 0 : wijn.hashCode());
 		return result;
 	}
 
@@ -57,23 +61,22 @@ public class Bestelbonlijn implements Serializable {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof Bestelbonlijn))
+		if (getClass() != obj.getClass())
 			return false;
 		Bestelbonlijn other = (Bestelbonlijn) obj;
 		if (aantal != other.aantal)
 			return false;
-//		if (bonid != other.bonid)
-//			return false;
-//		if (wijnid != other.wijnid)
-//			return false;
+		if (wijn == null) {
+			if (other.wijn != null)
+				return false;
+		} else if (!wijn.equals(other.wijn))
+			return false;
 		return true;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Bon: " + ", wijn: " + ", aantal: " + aantal;
+		return "Bestelbonlijn [aantal=" + aantal + ", wijn=" + wijn + "]";
 	}
-	
-	
 	
 }

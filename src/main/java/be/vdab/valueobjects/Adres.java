@@ -4,7 +4,13 @@ import java.io.Serializable;
 
 import javax.persistence.Embeddable;
 
-
+/**
+ * Immutable value object dat een adres voorstelt. Elk adres dient steeds compleet ingevuld te worden.
+ * Een geldig veld is een niet-null, niet-lege string.
+ * 
+ * @author Yannick Thibos
+ *
+ */
 @Embeddable
 public class Adres implements Serializable {
 
@@ -21,12 +27,10 @@ public class Adres implements Serializable {
 	protected Adres() {}
 
 	/**
+	 * Maakt een adres object aan en controleert meegegeven strings op correctheid. Elk adres dient steeds compleet ingevuld te worden.
+	 * Een geldig veld is een niet-null, niet-lege string.
 	 * 
-	 * @param straat
-	 * @param huisNr
-	 * @param postcode
-	 * @param gemeente
-	 * @throws IllegalArgumentException
+	 * @throws IllegalArgumentException		Wordt geworpen wanneer minstens één parameter niet aan de voorwaarde voldoet.
 	 */
 	public Adres(String straat, String huisNr, String postcode, String gemeente) throws IllegalArgumentException {
 		setStraat(straat);
@@ -85,6 +89,10 @@ public class Adres implements Serializable {
 		return result;
 	}
 
+	/**
+	 * Een adres is equal aan een ander adres wanneer ze naar hetzelfde object verwijzen, 
+	 * of wanneer álle velden exact dezelfde zijn (volgens String.equals).
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -117,6 +125,9 @@ public class Adres implements Serializable {
 		return true;
 	}
 
+	/**
+	 * Returnt return straat + " " + huisNr + ", " + postCode + " " + gemeente.toUpperCase()
+	 */
 	@Override
 	public String toString() {
 		return straat + " " + huisNr + ", " + postCode + " " + gemeente.toUpperCase();
