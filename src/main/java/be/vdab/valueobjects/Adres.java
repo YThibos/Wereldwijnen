@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Embeddable;
 
+import be.vdab.util.InputValidator;
+
 /**
  * Immutable value object dat een adres voorstelt. Elk adres dient steeds compleet ingevuld te worden.
  * Een geldig veld is een niet-null, niet-lege string.
@@ -54,28 +56,18 @@ public class Adres implements Serializable {
 	}
 	
 	private final void setStraat(String straat) throws IllegalArgumentException {
-		checkStringValidity(straat);
-		this.straat = straat;
+		this.straat = InputValidator.checkNotNullOrEmpty(straat);
 	}
 	private final void setHuisNr(String huisNr) throws IllegalArgumentException {
-		checkStringValidity(huisNr);
-		this.huisNr = huisNr;
+		this.huisNr = InputValidator.checkNotNullOrEmpty(huisNr);
 	}
 	private final void setPostcode(String postcode) throws IllegalArgumentException {
-		checkStringValidity(postcode);
-		this.postCode = postcode;
+		this.postCode = InputValidator.checkNotNullOrEmpty(postcode);
 	}
 	private final void setGemeente(String gemeente) throws IllegalArgumentException {
-		checkStringValidity(gemeente);
-		this.gemeente = gemeente;
+		this.gemeente = InputValidator.checkNotNullOrEmpty(gemeente);
 	}
 	
-	public static final void checkStringValidity(String string) throws IllegalArgumentException {
-		if (string == null || string.equals("")) {
-			throw new IllegalArgumentException("Veld verplicht in te vullen");
-		}
-	}
-
 	
 	// OVERRIDDEN OBJECT METHODS
 	@Override

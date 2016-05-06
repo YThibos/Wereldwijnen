@@ -19,6 +19,7 @@ import be.vdab.enums.Bestelwijze;
 import be.vdab.services.BestelbonService;
 import be.vdab.services.LandService;
 import be.vdab.services.WijnService;
+import be.vdab.util.InputValidator;
 import be.vdab.valueobjects.Adres;
 import be.vdab.valueobjects.Bestelbonlijn;
 
@@ -127,36 +128,39 @@ public class MandjeServlet extends HttpServlet {
 
 		// .. kan dit anders .. ?
 		try {
-			Adres.checkStringValidity(request.getParameter("naam"));
+			InputValidator.checkNotNullOrEmpty(request.getParameter("naam"));
 		} catch (IllegalArgumentException ex) {
 			fouten.put("naam", ex.getMessage());
 		}
 		try {
-			Adres.checkStringValidity(request.getParameter("straat"));
+			InputValidator.checkNotNullOrEmpty(request.getParameter("straat"));
 		} catch (IllegalArgumentException ex) {
 			fouten.put("straat", ex.getMessage());
 		}
 		try {
-			Adres.checkStringValidity(request.getParameter("huisnummer"));
+			InputValidator.checkNotNullOrEmpty(request.getParameter("huisnummer"));
 		} catch (IllegalArgumentException ex) {
 			fouten.put("huisnummer", ex.getMessage());
 		}
 		try {
-			Adres.checkStringValidity(request.getParameter("postcode"));
+			InputValidator.checkNotNullOrEmpty(request.getParameter("postcode"));
 		} catch (IllegalArgumentException ex) {
 			fouten.put("postcode", ex.getMessage());
 		}
 		try {
-			Adres.checkStringValidity(request.getParameter("gemeente"));
+			InputValidator.checkNotNullOrEmpty(request.getParameter("gemeente"));
 		} catch (IllegalArgumentException ex) {
 			fouten.put("gemeente", ex.getMessage());
 		}
 		try {
-			Adres.checkStringValidity(request.getParameter("bestelwijze"));
-			Bestelwijze.getValuesList()
-					.contains(Bestelwijze.valueOf(request.getParameter("bestelwijze").toUpperCase()));
+			String bestelwijze = request.getParameter("bestelwijze");
+			InputValidator.checkNotNullOrEmpty(bestelwijze);
+			if (! Bestelwijze.getValuesList()
+					.contains(Bestelwijze.valueOf(bestelwijze))) {
+				fouten.put("bestelwijze", "Ongeldige bestelwijze meegegeven.");
+			}
 		} catch (IllegalArgumentException ex) {
-			fouten.put("bestelwijze", "Ongeldige bestelwijze ingevuld");
+			fouten.put("bestelwijze", "Opgegeven string mag niet null of leeg zijn.");
 		}
 
 	}

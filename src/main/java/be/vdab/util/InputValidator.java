@@ -1,6 +1,6 @@
 package be.vdab.util;
 
-public class InputValidator {
+public final class InputValidator {
 	
 	private InputValidator() {};
 	
@@ -17,6 +17,5 @@ public class InputValidator {
 		}
 		return string;
 	}
-	
 	
 }

@@ -67,12 +67,14 @@ public class WijnDetailServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		Map<String, String> fouten = new HashMap<>();
+		long id = 0;
 
 		if (request.getParameter("id") != null) {
+		
 
 			try {
 				
-				long id = Long.parseLong(request.getParameter("id"));
+				id = Long.parseLong(request.getParameter("id"));
 				int aantalFlessen = Integer.parseInt(request.getParameter("aantalFlessen"));
 
 				if (aantalFlessen >= 1) {
@@ -91,7 +93,9 @@ public class WijnDetailServlet extends HttpServlet {
 		}
 		
 		if (!fouten.isEmpty()) {
+			request.setAttribute("landen", landService.findAll());
 			request.setAttribute("fouten", fouten);
+			request.setAttribute("wijn", wijnService.read(id));
 			request.getRequestDispatcher(VIEW).forward(request, response);
 		}
 	}
