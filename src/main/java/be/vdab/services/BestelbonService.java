@@ -10,7 +10,7 @@ public class BestelbonService extends AbstractService {
 	public Bestelbon tryCreate(Bestelbon bestelbon) {
 		try {
 			beginTransaction();
-			Bestelbon afterFlushBestelbon = bestelbonRepository.create(bestelbon);
+			Bestelbon afterFlushBestelbon = bestelbonRepository.tryCreate(bestelbon);
 			commit();
 			return afterFlushBestelbon;
 		} 

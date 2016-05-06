@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
- * The persistent class for the soorten database table.
+ * De immutable entity Soort die een wijnsoort voorstelt zoals ze wordt bijgehouden in de table soorten.
  * 
  */
 @Entity
@@ -62,6 +62,12 @@ public class Soort implements Serializable, Comparable<Soort> {
 		return result;
 	}
 	
+	/**
+	 * Vergelijkt twee landen op gelijkheid.
+	 * 
+	 * Twee landen zijn equal wanneer ze naar hetzelfde object verwijzen, of dezelfde naam én land hebben. 
+	 * Namen zijn hetzelfde wanneer naam.compareTo(andereNaam) == 0. Land gelijkheid wordt gebaseerd op {@link be.vdab.Land.equals Land.equals}
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -84,17 +90,21 @@ public class Soort implements Serializable, Comparable<Soort> {
 		return true;
 	}
 
+	/**
+	 * Vergelijkt twee soorten op lexicografische volgorde van hun naam. De teruggegeven waarde is dezelfde als this.naam.compareTo(andereNaam). 
+	 * Wanneer beide soorten dezelfde naam hebben wordt de naam van het land vergeleken d.m.v. ${@link be.vdab.Land.comparteTo Land.compareTo}.
+	 */
 	@Override
 	public int compareTo(Soort other) {
-		if (this.equals(other)) {
-			return 0;
-		}
 		if (this.naam.compareTo(other.naam) == 0) {
 			return this.land.getNaam().compareTo(other.land.getNaam());
 		}
 		return this.naam.compareTo(other.naam);
 	}
 	
+	/**
+	 * Geeft de naam van de wijnsoort terug zonder extra opmaak.
+	 */
 	@Override
 	public String toString() {
 		return naam;

@@ -1,12 +1,20 @@
 package be.vdab.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.math.BigDecimal;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 
 /**
- * The persistent class for the wijnen database table.
+ * De entity Wijn die een wijn voorstelt zoals ze wordt bijgehouden in de table wijnen.
  * 
  */
 @Entity
@@ -33,11 +41,11 @@ public class Wijn implements Serializable, Comparable<Wijn> {
 	protected Wijn() {}	
 	
 	public Wijn(byte beoordeling, int inBestelling, int jaar, BigDecimal prijs, Soort soort) {
-		this.beoordeling = beoordeling;
-		this.inBestelling = inBestelling;
-		this.jaar = jaar;
-		this.prijs = prijs;
-		this.soort = soort;
+		setBeoordeling(beoordeling);
+		setInBestelling(inBestelling);
+		setJaar(jaar);
+		setPrijs(prijs);
+		setSoort(soort);
 	}
 
 	
@@ -48,33 +56,35 @@ public class Wijn implements Serializable, Comparable<Wijn> {
 	public byte getBeoordeling() {
 		return this.beoordeling;
 	}
-	public void setBeoordeling(byte beoordeling) {
-		this.beoordeling = beoordeling;
-	}
 	public int getInBestelling() {
 		return this.inBestelling;
-	}
-	public void setInBestelling(int inBestelling) {
-		this.inBestelling = inBestelling;
 	}
 	public int getJaar() {
 		return this.jaar;
 	}
-	public void setJaar(int jaar) {
-		this.jaar = jaar;
-	}
 	public BigDecimal getPrijs() {
 		return this.prijs;
-	}
-	public void setPrijs(BigDecimal prijs) {
-		this.prijs = prijs;
 	}
 	public Soort getSoort() {
 		return this.soort;
 	}
+
 	public void setSoort(Soort soort) {
 		this.soort = soort;
 	}
+	public void setBeoordeling(byte beoordeling) {
+		this.beoordeling = beoordeling;
+	}
+	public void setInBestelling(int inBestelling) {
+		this.inBestelling = inBestelling;
+	}
+	public void setJaar(int jaar) {
+		this.jaar = jaar;
+	}
+	public void setPrijs(BigDecimal prijs) {
+		this.prijs = prijs;
+	}
+
 	public String getSterrenBeoordeling() {
 		String sterretjes = "";
 		for (byte i = 0; i < beoordeling; i++) {
@@ -94,6 +104,12 @@ public class Wijn implements Serializable, Comparable<Wijn> {
 		return result;
 	}
 
+	/**
+	 * Vergelijkt twee wijnen op gelijkheid.
+	 * 
+	 * Twee wijnen zijn equal wanneer ze naar hetzelfde object verwijzen, of dezelfde naam én soort hebben. 
+	 * Namen zijn hetzelfde wanneer naam.compareTo(andereNaam) == 0. Soort gelijkheid wordt gebaseerd op {@link be.vdab.Soort.equals Soort.equals}
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -113,10 +129,18 @@ public class Wijn implements Serializable, Comparable<Wijn> {
 		return true;
 	}
 
+	/**
+	 * Vergelijkt twee wijnen op natuurlijke volgorde van hun jaartal. Deze is gelijk aan this.jaar - other.jaar.
+	 */
 	@Override
 	public int compareTo(Wijn other) {
 		return this.jaar - other.jaar;
 	}
 	
+	
+	// OPERATIONS
+	public final void addInBestelling(int aantal) {
+		this.inBestelling = this.inBestelling + aantal;
+	}
 	
 }

@@ -8,8 +8,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import be.vdab.util.InputValidator;
+
 /**
- * The persistent class for the landen database table.
+ * De immutable entity Land die een land voorstelt zoals ze wordt bijgehouden in de table landen.
  * 
  */
 @Entity
@@ -28,8 +30,8 @@ public class Land implements Serializable, Comparable<Land> {
 	// CONSTRUCTORS
 	protected Land() {}
 	
-	public Land(String naam) {
-		this.naam = naam;
+	public Land(String naam) throws IllegalArgumentException {
+		this.naam = InputValidator.checkNotNullOrEmpty(naam);
 	}
 
 	
@@ -48,19 +50,33 @@ public class Land implements Serializable, Comparable<Land> {
 		return naam.hashCode();
 	}
 
+	/**
+	 * Vergelijkt twee landen op gelijkheid.
+	 * 
+	 * Twee landen zijn equal wanneer ze dezelfde naam hebben, of naar hetzelfde object verwijzen. Namen zijn hetzelfde wanneer naam.compareTo(andereNaam) == 0.
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null || ! (obj instanceof Land)) {
 			return false;
 		}
-		return this.naam == ((Land)obj).naam;
+		if (this == obj) {
+			return true;
+		}
+		return this.naam.compareTo(((Land)obj).naam) == 0;
 	}
 
+	/**
+	 * Vergelijkt twee landen op lexicografische volgorde van hun naam. De teruggegeven waarde is dezelfde als this.naam.compareTo(andereNaam).
+	 */
 	@Override
 	public int compareTo(Land other) {
 		return this.naam.compareTo(other.naam);
 	}
 	
+	/**
+	 * Geeft de naam van het land terug zonder extra opmaak.
+	 */
 	@Override
 	public String toString() {
 		return this.naam;

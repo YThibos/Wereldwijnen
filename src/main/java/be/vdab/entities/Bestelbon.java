@@ -17,12 +17,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 import be.vdab.enums.Bestelwijze;
+import be.vdab.util.InputValidator;
 import be.vdab.valueobjects.Adres;
 import be.vdab.valueobjects.Bestelbonlijn;
 
 
 /**
- * The persistent class for the bestelbonnen database table.
+ * De entity Bestelbon die een bestelbon voorstelt zoals ze wordt bijgehouden in de table bestelbonnen.
  * 
  */
 @Entity
@@ -48,13 +49,16 @@ public class Bestelbon implements Serializable, Comparable<Bestelbon> {
 	protected Bestelbon() {}
 	
 	/**
+	 * Bij het aanmaken van een nieuwe Bestelbon controleert deze constructor op geldige input. 
+	 * Het tijdstip van bestelling wordt gelijkgesteld aan LocalDate.now().
 	 * 
-	 * @param bestelwijze
-	 * @param naam
-	 * @param adres
-	 * @param bestelbonlijnen
-	 * @throws IllegalArgumentException
-	 * @throws NullPointerException
+	 * @param bestelwijze					Enum Bestelwijze die geen null-reference mag zijn.
+	 * @param naam							String naam die gecontroleerd wordt door {@link be.vdab.InputValidator.checkNotNullOrEmptyString(String)}
+	 * @param adres							Adres object die niet null mag zijn.
+	 * @param bestelbonlijnen				Set van Bestelbonlijn die niet null mag zijn.
+	 * 
+	 * @throws IllegalArgumentException		Wordt geworpen indien niet voldaan aan de voorwaarden van de parameters.		
+	 * @throws NullPointerException			Wordt geworpen wanneer minstens één van de parameters null is.
 	 */
 	public Bestelbon(Bestelwijze bestelwijze, String naam, Adres adres, Set<Bestelbonlijn> bestelbonlijnen) 
 			throws IllegalArgumentException, NullPointerException {
@@ -87,22 +91,18 @@ public class Bestelbon implements Serializable, Comparable<Bestelbon> {
 	}
 	
 	public void setBestelwijze(Bestelwijze bestelwijze) {
+		Objects.requireNonNull(bestelwijze, "Verplicht een bestelwijze op te geven.");
 		this.bestelwijze = bestelwijze;
 	}
 	public void setNaam(String naam) throws IllegalArgumentException {
-		if (naam != null && !naam.equals("")) {
-			this.naam = naam;
-		}	
-		else {
-			throw new IllegalArgumentException("Ongeldige naam voor bestelbon. Mag niet null of leeg zijn");
-		}
+		this.naam = InputValidator.checkNotNullOrEmpty(naam);
 	}
 	public void setAdres(Adres adres) throws NullPointerException {
-		Objects.requireNonNull(adres, "Ongeldig adres opgegeven");
+		Objects.requireNonNull(adres, "Verplicht een adres op te geven.");
 		this.adres = adres;
 	}
 	public void setBestelbonlijnen(Set<Bestelbonlijn> bestelbonlijnen) throws NullPointerException {
-		Objects.requireNonNull(bestelbonlijnen, "Ongeldige bestelbonlijnen opgegeven");
+		Objects.requireNonNull(bestelbonlijnen, "Verplicht bestelbonlijnen op te geven.");
 		this.bestelbonlijnen = bestelbonlijnen;
 	}
 
@@ -117,6 +117,11 @@ public class Bestelbon implements Serializable, Comparable<Bestelbon> {
 		return result;
 	}
 
+	/**
+	 * Vergelijkt twee bestelbonnen op gelijkheid.
+	 * 
+	 * Bestelbonnen worden als gelijk beschouwd wanneer ze naar hetzelfde object verwijzen, of wanneer ze gelijke waarden hebben als naam en besteldatum. 
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		// idem comment als bij hashCode
@@ -140,12 +145,14 @@ public class Bestelbon implements Serializable, Comparable<Bestelbon> {
 		return true;
 	}
 
-
+	/**
+	 * Vergelijkt twee bestelbonnen met elkaar op basis van naam, en indien dezelfde naam op besteldatum.
+	 * 
+	 * De teruggegeven waarde is dezelfde als this.naam.compareTo(other.naam). 
+	 * Bij dezelfde namen telt de besteldatum in chronologische, oplopende volgorde. Datums worden vergeleken d.m.v. LocalDate.compareTo.
+	 */
 	@Override
 	public int compareTo(Bestelbon other) {
-		if (this.equals(other)) {
-			return 0;
-		}
 		if (this.naam.compareTo(other.naam) == 0) {
 			return this.besteld.compareTo(other.besteld);
 		}

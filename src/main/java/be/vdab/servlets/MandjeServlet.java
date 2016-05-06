@@ -101,6 +101,12 @@ public class MandjeServlet extends HttpServlet {
 
 		// Als nog steeds geen fouten, persist bestelbon
 		if (fouten.isEmpty()) {
+			
+			// Verhoog per wijn het aantal in bestelling
+			for (Bestelbonlijn bestelbonlijn : bestelbon.getBestelbonlijnen()) {
+				bestelbonlijn.getWijn().addInBestelling(bestelbonlijn.getAantal());
+			}
+			
 			Bestelbon updatedBestelbon = bestelbonService.tryCreate(bestelbon);
 			if (updatedBestelbon != null) {
 				request.getSession().invalidate();
