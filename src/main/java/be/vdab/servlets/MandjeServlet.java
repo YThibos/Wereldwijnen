@@ -64,6 +64,7 @@ public class MandjeServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
 
 		Map<String, String> fouten = new HashMap<>();
 		Map<Long, Integer> mandje = fetchMandje(request);
